@@ -1,4 +1,4 @@
-# flutter_bloc_back4app
+# flutter_bloc_chat_back4app
 
 A new Flutter project.
 
