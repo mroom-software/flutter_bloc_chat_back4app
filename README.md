@@ -1,6 +1,10 @@
 # flutter_bloc_chat_back4app
 
-A new Flutter project.
+A Basic Chat App in Flutter which uses blocs to manage state and back4app as the server-side. Here is the link of full article: https://medium.com/@trongdth/flutter-bloc-back4app-basic-chat-app-489e18e98052
+
+## Demo:
+
+[![Demo](http://img.youtube.com/vi/qUvI0D1rmwc/0.jpg)](https://www.youtube.com/watch?v=qUvI0D1rmwc)
 
 ## Getting Started
 
