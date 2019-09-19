@@ -6,7 +6,7 @@ import 'package:flutter_bloc_back4app/blocs/login/login_states.dart';
 import 'package:flutter_bloc_back4app/repositories/user_repos.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final UserRepository userRepository;
+  final BaseUserRepository userRepository;
   final AuthBloc authBloc;
 
   LoginBloc({this.userRepository, this.authBloc}) : assert(userRepository != null), assert(authBloc != null);

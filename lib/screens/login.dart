@@ -171,6 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 40,
                       ),
                       ButtonWidget(
+                        key: Key('BtnLogin'),
                         onPressed: () => _handleLogin(),
                         title: 'LOGIN',
                       ),

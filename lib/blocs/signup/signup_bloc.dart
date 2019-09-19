@@ -6,7 +6,7 @@ import 'package:flutter_bloc_back4app/blocs/signup/signup_states.dart';
 import 'package:flutter_bloc_back4app/repositories/user_repos.dart';
 
 class SignupBloc extends Bloc<SignupEvent, SignupState> {
-  final UserRepository userRepository;
+  final BaseUserRepository userRepository;
   final AuthBloc authBloc;
 
   SignupBloc({this.userRepository, this.authBloc}) : assert(userRepository != null), assert(authBloc != null);
@@ -35,6 +35,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         
       } catch (error) {
         yield SignupFailure(error: error.toString());
+      } finally {
+        yield SignupSuccess();
       }
     }
   }

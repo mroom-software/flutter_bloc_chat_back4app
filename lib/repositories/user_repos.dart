@@ -2,7 +2,14 @@
 import 'package:meta/meta.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
-class UserRepository {
+abstract class BaseUserRepository {
+  Future<ParseUser> authenticate({@required String username, @required String email, @required String password,});
+  Future<ParseUser> signup({@required String username, @required String email, @required String password, });
+  Future<ParseUser> currentUser();
+  Future<bool> logout();
+}
+
+class UserRepository extends BaseUserRepository {
   
   UserRepository();
 
