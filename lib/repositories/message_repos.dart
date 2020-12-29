@@ -1,6 +1,6 @@
 
 import 'package:flutter_bloc_back4app/data/models/message.dart';
-import 'package:parse_server_sdk/parse_server_sdk.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class MessageRepository {
   

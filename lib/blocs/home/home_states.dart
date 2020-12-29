@@ -2,14 +2,17 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc_back4app/data/models/message.dart';
 import 'package:meta/meta.dart';
 
-abstract class HomeState extends Equatable{
-  HomeState([List props = const[]]) : super([props]);
+class HomeState extends Equatable {
+  final List<Object> props;
+  const HomeState([this.props]);
 }
 
 class HomeLoaded extends HomeState {
   final List<Message> lstMessages;
-  
-  HomeLoaded({@required this.lstMessages}) : assert(lstMessages != null), super([lstMessages]);
+
+  HomeLoaded({@required this.lstMessages})
+      : assert(lstMessages != null),
+        super([lstMessages]);
 
   @override
   String toString() => 'HomeLoaded';

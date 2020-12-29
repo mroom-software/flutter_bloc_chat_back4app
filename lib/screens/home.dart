@@ -3,15 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_back4app/blocs/home/home_bloc.dart';
-import 'package:flutter_bloc_back4app/blocs/home/home_events.dart';
 import 'package:flutter_bloc_back4app/blocs/home/home_states.dart';
 import 'package:flutter_bloc_back4app/data/models/message.dart';
 import 'package:flutter_bloc_back4app/data/validators/name_validator.dart';
-import 'package:parse_server_sdk/parse_server_sdk.dart';
-
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class HomeScreen extends StatefulWidget {
-
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -19,11 +16,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _message;
-  HomeBloc _homeBloc;
+  HomeCubit _homeCubit;
   List<Message> lst;
 
   @override
   void initState() {
+    _homeCubit = BlocProvider.of<HomeCubit>(context);
     lst = List<Message>();
     _handleLiveQuery();
     super.initState();
@@ -46,17 +44,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: <Widget>[
                     Align(
-                      alignment: (index % 2 == 0) ? Alignment.bottomLeft : Alignment.bottomRight ,
+                      alignment: (index % 2 == 0) ? Alignment.bottomLeft : Alignment.bottomRight,
                       child: Text(
                         lst[index].user.objectId,
-                        style: Theme.of(context).textTheme.subtitle,
+                        style: Theme.of(context).textTheme.subtitle2,
                       ),
                     ),
                     Align(
-                      alignment: (index % 2 == 0) ? Alignment.bottomLeft : Alignment.bottomRight ,
+                      alignment: (index % 2 == 0) ? Alignment.bottomLeft : Alignment.bottomRight,
                       child: Text(
                         lst[index].message,
-                        style: Theme.of(context).textTheme.body1,
+                        style: Theme.of(context).textTheme.bodyText2,
                       ),
                     ),
                   ],
@@ -105,14 +103,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   flex: 2,
                   child: InkWell(
                     onTap: _sendMessage,
-                    child: Icon(
-                      Icons.send
-                    ),
+                    child: Icon(Icons.send),
                   ),
                 ),
               ],
             ),
-            
           ),
         ),
       ),
@@ -121,22 +116,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-     _homeBloc = BlocProvider.of<HomeBloc>(context);
-
-    return BlocBuilder<HomeBloc, HomeState>(
-      bloc: _homeBloc,
+    return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            title: Text(
-              'MESSAGES',
-              style: Theme.of(context).textTheme.headline,
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              title: Text(
+                'MESSAGES',
+                style: Theme.of(context).textTheme.headline5,
+              ),
+              elevation: 0.5,
             ),
-            elevation: 0.5,
-          ),
-          body: _buildListOfMessages(state)
-        );
+            body: _buildListOfMessages(state));
       },
     );
   }
@@ -147,23 +138,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
     print('LiveQueryURL ${ParseCoreData().liveQueryURL}');
 
-    liveQuery.on(LiveQueryEvent.create, (value) {
+    Subscription subscription = await liveQuery.client.subscribe(query);
+    subscription.on(LiveQueryEvent.create, (value) {
       print('*** CREATE ***: ${DateTime.now().toString()}\n $value ');
       Message m = Message.clone().fromJson(jsonDecode(value.toString()));
       lst.add(m);
-      setState(() {
-      });
+      setState(() {});
     });
 
-    liveQuery.on(LiveQueryEvent.update, (value) {
+    subscription.on(LiveQueryEvent.update, (value) {
       print('*** UPDATE ***: ${DateTime.now().toString()}\n $value ');
     });
 
-    liveQuery.on(LiveQueryEvent.delete, (value) {
+    subscription.on(LiveQueryEvent.delete, (value) {
       print('*** DELETE ***: ${DateTime.now().toString()}\n $value ');
     });
 
-    await liveQuery.subscribe(query);
     print('Subscribe done');
   }
 
@@ -177,8 +167,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _sendMessage() {
-    if(_validateAndSave()) {
-      _homeBloc.dispatch(SendMessagePressed(message:_message));
+    if (_validateAndSave()) {
+      _homeCubit.sendMessagePressed(message: _message);
     }
   }
 }

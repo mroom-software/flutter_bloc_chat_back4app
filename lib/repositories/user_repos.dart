@@ -1,6 +1,6 @@
 
 import 'package:meta/meta.dart';
-import 'package:parse_server_sdk/parse_server_sdk.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 abstract class BaseUserRepository {
   Future<ParseUser> authenticate({@required String username, @required String email, @required String password,});

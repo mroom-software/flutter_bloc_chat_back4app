@@ -1,44 +1,34 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter_bloc_back4app/blocs/auth/auth_bloc.dart';
-import 'package:flutter_bloc_back4app/blocs/auth/auth_events.dart';
-import 'package:flutter_bloc_back4app/blocs/signup/signup_events.dart';
 import 'package:flutter_bloc_back4app/blocs/signup/signup_states.dart';
 import 'package:flutter_bloc_back4app/repositories/user_repos.dart';
 
-class SignupBloc extends Bloc<SignupEvent, SignupState> {
+class SignupCubit extends Cubit<SignupState> {
   final BaseUserRepository userRepository;
-  final AuthBloc authBloc;
 
-  SignupBloc({this.userRepository, this.authBloc}) : assert(userRepository != null), assert(authBloc != null);
+  SignupCubit({this.userRepository})
+      : assert(userRepository != null),
+        super(SignupInitial());
 
-  @override
-  SignupState get initialState => SignupInitial();
+  Future<void> signupButtonPressed({String username, email, password}) async {
+    emit(SignupLoading());
+    try {
+      final user = await userRepository.signup(
+        username: username,
+        email: email,
+        password: password,
+      );
 
-  @override
-  Stream<SignupState> mapEventToState(SignupEvent event) async* {
-    if (event is SignupButtonPressed) {
-      yield SignupLoading();
-      try {
-        final user = await userRepository.signup(
-          username: event.username,
-          email: event.email,
-          password: event.password,
-        );
-
-        if (user != null) {
-          yield SignupSuccess();
-          authBloc.dispatch(LoggedIn(user: user));
-          
-        } else {
-          yield SignupFailure(error: 'Signup Failed');
-        }
-        
-      } catch (error) {
-        yield SignupFailure(error: error.toString());
-      } finally {
-        yield SignupSuccess();
+      if (user != null) {
+        emit(SignupSuccess());
+      } else {
+        emit(SignupFailure(error: 'Signup Failed'));
       }
+    } catch (error) {
+      emit(SignupFailure(error: error.toString()));
     }
   }
-  
+
+  Future<void> fakeSignupSuccess() async {
+    emit(SignupSuccess());
+  }
 }

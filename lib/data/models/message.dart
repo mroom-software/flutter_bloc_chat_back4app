@@ -1,19 +1,18 @@
-
-import 'package:parse_server_sdk/parse_server_sdk.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 const String _keyTableName = 'Messages';
 const String keyMessage = 'message';
 const String keyUser = 'user';
 
 class Message extends ParseObject implements ParseCloneable {
-
   Message() : super(_keyTableName);
-  Message.clone(): this();
+  Message.clone() : this();
 
   /// Looks strangely hacky but due to Flutter not using reflection, we have to
   /// mimic a clone
-  @override clone(Map map) => Message.clone()..fromJson(map);
-  
+  @override
+  clone(Map map) => Message.clone()..fromJson(map);
+
   String get message => get<String>(keyMessage);
   set message(String message) => set<String>(keyMessage, message);
 

@@ -1,10 +1,9 @@
-
-
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-abstract class LoginState extends Equatable{
-  LoginState([List props = const[]]) : super([props]);
+class LoginState extends Equatable {
+  final List<Object> props;
+  const LoginState([this.props = const []]);
 }
 
 class LoginInitial extends LoginState {
@@ -15,6 +14,11 @@ class LoginInitial extends LoginState {
 class LoginLoading extends LoginState {
   @override
   String toString() => 'LoginLoading';
+}
+
+class LoginSuccess extends LoginState {
+  @override
+  String toString() => 'LoginSuccess';
 }
 
 class LoginFailure extends LoginState {

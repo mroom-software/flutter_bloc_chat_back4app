@@ -1,8 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-abstract class SignupState extends Equatable{
-  SignupState([List props = const[]]) : super([props]);
+class SignupState extends Equatable {
+  final List<Object> props;
+  const SignupState([this.props = const []]);
 }
 
 class SignupInitial extends SignupState {
@@ -23,7 +24,6 @@ class SignupFailure extends SignupState {
   @override
   String toString() => 'SignupFailure { error: $error }';
 }
-
 
 class SignupSuccess extends SignupState {
   @override

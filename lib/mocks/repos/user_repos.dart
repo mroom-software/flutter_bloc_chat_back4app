@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter_bloc_back4app/repositories/user_repos.dart';
-import 'package:parse_server_sdk/parse_server_sdk.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 
 class MockUserRepository extends BaseUserRepository {
